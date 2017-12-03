@@ -14,4 +14,6 @@ from .config import *
 
 from ._Event import Event, EventRecordable
 
+from ._psm import PersistentStateMachine
+
 from ._version import __version__

@@ -10,8 +10,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import transitions
 
-class PersistentStateMachine(Machine):
+class PersistentStateMachine(transitions.Machine):
     @classmethod
     def srp(cls, interface, logger):
         "The legendary State Recovery Protocol (SRP)"
