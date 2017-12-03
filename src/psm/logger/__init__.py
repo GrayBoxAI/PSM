@@ -10,16 +10,4 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
-class PersistentStateMachine(Machine):
-    @classmethod
-    def srp(cls, interface, logger):
-        "The legendary State Recovery Protocol (SRP)"
-        state = logger.find_last_state()
-        trigger = logger.find_last_trigger_after(state)
-        tobe_countered_actions = logger.find_uncountered_actions_after(state)
-        for i in tobe_countered_actions:
-            i.issue_counteraction(interface, logger)
-
-        data = logger.recover_psm_data()
-        return state, trigger, data
+from ._base import PersistentEventLogger
