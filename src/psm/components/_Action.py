@@ -10,6 +10,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import copy
+
 from psm import EventRecordable
 
 
@@ -30,7 +32,8 @@ class Action(EventRecordable):
         result = copy.deepcopy(self.data)
         for field in self.fields:
             if field not in self.data:
-                raise AttributeError('Required field <{}> not found for action <{}>'.format(field, self))
+                err_msg = "Required field <{}> not found for action <{}>"
+                raise AttributeError(err_msg.format(field, self))
             result[field] = self.fields[field](self.data[field])
         self.data = result
 
@@ -80,7 +83,7 @@ class CounterAction(EventRecordable):
 
     def _log(self, logger):
         raise NotImplementedError
-        
+
     def issue(self, interface, logger):
         self._do(interface)
         self._log(logger)

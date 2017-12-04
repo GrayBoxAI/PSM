@@ -21,12 +21,12 @@ class Event(object):
 
     @classmethod
     def from_dict(cls, dic):
-        return Event(dic['event_id'], 
-                     dic['timestamp'], 
-                     dic['event_type'], 
+        return Event(dic['event_id'],
+                     dic['timestamp'],
+                     dic['event_type'],
                      dic['event_name'],
                      dic['data']
-)
+                    )
 
 
 class EventRecordable(object):
@@ -50,8 +50,8 @@ class EventRecordable(object):
         for subcls in subclses:
             if subcls.__name__ == event.event_name:
                 return subcls.recoverSpecific(event)
-        msg = 'Event name <{}> not understood for type <{}>'.format(event.event_name, event.event_type)
-        raise ValueError(msg)
+        msg = "Event name <{}> not understood for type <{}>"
+        raise ValueError(msg.format(event.event_name, event.event_type))
 
     @classmethod
     def recoverSpecific(cls, event):

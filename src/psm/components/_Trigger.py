@@ -14,6 +14,7 @@ import copy
 
 from psm import EventRecordable
 
+
 class Trigger(EventRecordable):
     """ Trigger serves as the entry point for a psm's generation and state recovery.
         Also, trigger holds all the data inputs to the psm from the outside world!

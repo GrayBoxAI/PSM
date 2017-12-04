@@ -10,6 +10,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from psm import EventRecordable
+
 
 class EnterState(EventRecordable):
     def __init__(self, logid, name, data, timestamp=None):

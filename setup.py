@@ -13,8 +13,6 @@
 import os
 from setuptools import setup, find_packages
 
-
-# This reads the __version__ variable from openfermion/_version.py
 exec(open('src/psm/_version.py').read())
 
 # Read in requirements.txt

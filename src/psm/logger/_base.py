@@ -11,7 +11,7 @@
 #   limitations under the License.
 
 import copy
-import datetime
+from datetime import datetime
 import random
 
 from psm import Event, EventRecordable
