@@ -29,40 +29,34 @@ class PersistentEventLogger(object):
         self.curr_id = 0
 
     def records(self):
-        "return a generator to the log"
-        if self.if_mock:
-            return self._mocklogger
-        else:
-            # use DB's generator
-            raise NotImplementedError
+        "Abstract method: return a generator to the log"
+        raise NotImplementedError
 
     def empty(self):
-        if self.if_mock:
-            return not self._mocklogger
-        else:
-            raise NotImplementedError
+        "Abstract method: return boolean for if the logger is empty"
+        raise NotImplementedError
+
+    def _log_event_dic(self, dic):
+        "Abstract method: log a event dictionary into persistent store"
+        raise NotImplementedError
 
     def logAnyEvent(self, typ, name, data=None, rand_stamp=None):
+        if typ not in self.__class__.allowed_type:
+            error_msg = '{} Class Error, event type <{}> not allowed to be logged!'
+            raise ValueError(error_msg.format(self.__class__, typ))
         self.curr_id += 1
 
-        if typ not in PersistentEventLogger.allowed_type:
-            error_msg = 'Persistent State Machine Error, event type <{}> not allowed to be logged!'
-            raise ValueError(error_msg.format(typ))
         if not rand_stamp:
             rand_stamp = self.get_random_stamp()
 
-        dic = { 'event_id'  : self.curr_id,
-                'event_type': typ,
-                'event_name': name,
-                'rand_stamp': rand_stamp,
-                'timestamp': datetime.now(),
-                'data': data,
+        dic = {'event_id'  : self.curr_id,
+               'event_type': typ,
+               'event_name': name,
+               'rand_stamp': rand_stamp,
+               'timestamp': datetime.now(),
+               'data': data,
               }
-
-        if self.if_mock:
-            self._mocklogger.append(dic)
-        else:
-            self.collection.insert_one(dic)
+        self._log_event_dic(dic)
 
     def get_random_stamp(self):
         random.seed(datetime.now())
@@ -87,12 +81,6 @@ class PersistentEventLogger(object):
         typ = 'CounterAction'
         self.logAnyEvent(typ, name, data)
 
-    def printmocklog(self):
-        for idx, record in enumerate(self._mocklogger):
-            print(idx)
-            print(record)
-            print()
-
     def recover_psm_data(self):
         data = {'state':{}}
         for t in self._find_all_triggers():
@@ -109,9 +97,9 @@ class PersistentEventLogger(object):
 
     def _find_all_type(self, typ):
         all_this_type = []
-        for i in self.records():
-            if i['event_type'] == typ:
-                dic = copy.deepcopy(i)
+        for record in self.records():
+            if record['event_type'] == typ:
+                dic = copy.deepcopy(record)
                 event = Event.from_dict(dic)
                 t = EventRecordable.from_event(event)
                 all_this_type.append(t)

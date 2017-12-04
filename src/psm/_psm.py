@@ -15,6 +15,11 @@ import transitions
 class PersistentStateMachine(transitions.Machine):
     @classmethod
     def srp(cls, interface, logger):
+        "Alias for state recovery protocol"
+        return cls.state_recovery_protocol(interface, logger)
+
+    @classmethod
+    def state_recovery_protocol(cls, interface, logger):
         "The legendary State Recovery Protocol (SRP)"
         state = logger.find_last_state()
         trigger = logger.find_last_trigger_after(state)

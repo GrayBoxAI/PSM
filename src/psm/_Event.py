@@ -35,6 +35,13 @@ class EventRecordable(object):
         pass
 
     @classmethod
+    def recoverSpecific(cls, event):
+        raise NotImplementedError
+
+    def _log(self, logger):
+        raise NotImplementedError
+
+    @classmethod
     def from_event(cls, event):
         "Based on Event Type dispatch event recovery to each Type's handle"
         subclses = cls.__subclasses__()
@@ -52,10 +59,3 @@ class EventRecordable(object):
                 return subcls.recoverSpecific(event)
         msg = "Event name <{}> not understood for type <{}>"
         raise ValueError(msg.format(event.event_name, event.event_type))
-
-    @classmethod
-    def recoverSpecific(cls, event):
-        raise NotImplementedError
-
-    def _log(self, logger):
-        raise NotImplementedError

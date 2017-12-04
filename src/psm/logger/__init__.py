@@ -11,3 +11,5 @@
 #   limitations under the License.
 
 from ._base import PersistentEventLogger
+
+from ._mock import MockLogger
