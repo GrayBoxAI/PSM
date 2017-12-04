@@ -17,5 +17,3 @@ import unittest
 class Integration(unittest.TestCase):
     def test_no_internal_data(self):
         pass
-    
-    

@@ -43,7 +43,7 @@ class PersistentEventLogger(object):
     def logAnyEvent(self, typ, name, data=None, rand_stamp=None):
         if typ not in self.__class__.allowed_type:
             error_msg = '{} Class Error, event type <{}> not allowed to be logged!'
-            raise ValueError(error_msg.format(self.__class__, typ))
+            raise TypeError(error_msg.format(self.__class__, typ))
         self.curr_id += 1
 
         if not rand_stamp:
